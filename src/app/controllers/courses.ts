@@ -1,37 +1,26 @@
-import express from "express";
-import {Course} from "./interfaces/course.interface";
-import {Courses} from "./localDB/db";
-import {validateCourse} from "./validation/validator";
-
-/**
- * Create Express server
- */
-const app = express();
+import { Request, Response } from "express";
+import {Course} from "../interfaces/course.interface";
+import {Courses} from "../localDB/db";
+import {validateCourse} from "../validation/validate-course";
 
 /**
  * Temporary local db, TODO remove when implementing mongodb
  */
 const courses: Course[] = Courses;
 
-
 /**
- * Parse the json from request
+ * GET /api/courses
+ *
  */
-app.use(express.json());
-
-/**
- * Primary app routes.
- */
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
-app.get('/api/courses', (req, res) => {
+export let getCourses = (req: Request, res: Response) => {
     res.send(courses);
-});
+};
 
-app.post('/api/courses', (req, res) => {
-
+/**
+ * POST /api/courses
+ *
+ */
+export let postCourse = (req: Request, res: Response) => {
     const {error} = validateCourse(req.body); // returnedObject.error
 
     if (error) {
@@ -46,9 +35,13 @@ app.post('/api/courses', (req, res) => {
     courses.push(course);
 
     res.send(course);
-});
+};
 
-app.get('/api/courses/:id', (req, res) => {
+/**
+ * GET /api/courses/:id
+ *
+ */
+export let getCourse = (req: Request, res: Response) => {
     const course = courses.find((course) => {
         return course.id === parseInt(req.params.id, 10);
     });
@@ -58,9 +51,13 @@ app.get('/api/courses/:id', (req, res) => {
     }
 
     res.send(course);
-});
+};
 
-app.put('/api/courses/:id', (req, res) => {
+/**
+ * PUT /api/courses/:id
+ *
+ */
+export let putCourse = (req: Request, res: Response) => {
     const course = courses.find((course) => {
         return course.id === parseInt(req.params.id, 10);
     });
@@ -78,10 +75,13 @@ app.put('/api/courses/:id', (req, res) => {
     course.name = req.body.name;
     res.send(course);
 
-});
+};
 
-
-app.delete('/api/courses/:id', (req, res) => {
+/**
+ * DELETE /api/courses/:id
+ *
+ */
+export let deleteCourse = (req: Request, res: Response) => {
     const course = courses.find((course) => {
         return course.id === parseInt(req.params.id, 10);
     });
@@ -95,7 +95,5 @@ app.delete('/api/courses/:id', (req, res) => {
     courses.splice(index, 1);
 
     res.send(course);
-});
+};
 
-
-export default app;
