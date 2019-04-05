@@ -1,5 +1,6 @@
 import express from "express";
 import config from "config";
+import debug from "debug"
 
 // middleware
 import {authenticate} from "./middleware/authenticate";
@@ -16,7 +17,23 @@ import * as coursesController from './controllers/courses';
  */
 const app = express();
 
-console.log('env: ' + config.get('name'));
+/**
+ * Set render engine and views path
+ */
+app.set('view engine', 'pug');
+app.set('views', config.get('viewsPath'));
+
+/**
+ * Set debugger
+ */
+const appDebug = debug('app');
+
+appDebug('App started');
+
+/**
+ * console environment from config
+ */
+console.log(`App is started in: ${config.get('env')} mode`);
 
 /**
  * Middleware

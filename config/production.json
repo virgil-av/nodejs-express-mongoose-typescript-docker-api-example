@@ -1,3 +1,4 @@
 {
-  "name": "production"
+  "env": "Production",
+  "viewsPath": "./app/views"
 }

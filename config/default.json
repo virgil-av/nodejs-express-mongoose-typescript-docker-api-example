@@ -1,3 +1,4 @@
 {
-  "name": "Default"
+  "env": "Development",
+  "viewsPath": "./dist/app/views"
 }
