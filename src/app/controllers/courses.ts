@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
-import {validateCourse} from "../../validation/validate-course";
-import CourseDB from "./courses.db";
+import {courseValidators} from "../validation/course.validators";
+import CourseDB from "../models/courses.model";
 
 
 /**
@@ -22,7 +22,7 @@ export let getCourses = async (req: Request, res: Response) => {
  *
  */
 export let postCourse = async (req: Request, res: Response) => {
-    const {error} = validateCourse(req.body); // returnedObject.error
+    const {error} = courseValidators(req.body); // returnedObject.error
 
     if (error) {
         res.status(400).send(error.details[0].message);
@@ -74,7 +74,7 @@ export let getCourse = async (req: Request, res: Response) => {
  */
 export let putCourse = async (req: Request, res: Response) => {
 
-    const {error} = validateCourse(req.body); // returnedObject.error
+    const {error} = courseValidators(req.body); // returnedObject.error
 
     if (error) {
         res.status(400).send(error.details[0].message);

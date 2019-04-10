@@ -1,7 +1,7 @@
 import {Course} from "../interfaces/course.interface";
 import Joi from "joi";
 
-export function validateCourse(course: Course){
+export function courseValidators(course: Course){
 
     const schema = {
         name: Joi.string().min(3).required(),

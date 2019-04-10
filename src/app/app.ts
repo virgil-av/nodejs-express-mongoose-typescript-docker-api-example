@@ -8,9 +8,10 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 // routers and controllers
-import coursesRouter from "./routers/courses.router";
-import indexRouter from "./routers/index.router";
+import coursesRouter from "./routes/courses.router";
+import indexRouter from "./routes/index.router";
 import mongoose from "mongoose";
+import testRouter from "./routes/test.router";
 
 
 /**
@@ -60,5 +61,6 @@ app.use(morgan('tiny'));
  */
 app.use('/', indexRouter);
 app.use('/api/courses', coursesRouter);
+app.use('/api/test', testRouter);
 
 export default app;
