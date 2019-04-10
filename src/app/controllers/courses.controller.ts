@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {courseValidators} from "../validation/course.validators";
-import CourseDB from "../models/courses.model";
+import CourseModel from "../models/courses.model";
 
 
 /**
@@ -9,7 +9,7 @@ import CourseDB from "../models/courses.model";
  */
 export let getCourses = async (req: Request, res: Response) => {
     try{
-        const courses = await CourseDB.find();
+        const courses = await CourseModel.find().populate('author','name -_id'); // populate the author from another collection and only display the name
         res.send(courses);
     }
     catch(error){
@@ -30,7 +30,7 @@ export let postCourse = async (req: Request, res: Response) => {
     }
 
     try{
-        const course = new CourseDB(req.body);
+        const course = new CourseModel(req.body);
         const result =  await course.save();
 
         res.send(result);
@@ -54,7 +54,7 @@ export let postCourse = async (req: Request, res: Response) => {
 export let getCourse = async (req: Request, res: Response) => {
 
     try{
-        const course = await CourseDB.findById(req.params.id);
+        const course = await CourseModel.findById(req.params.id);
 
         if (!course) {
             return res.status(404).send('The course with the given id was not found');
@@ -82,7 +82,7 @@ export let putCourse = async (req: Request, res: Response) => {
     }
 
     try{
-        const course = await CourseDB.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
         if (!course) {
             return res.status(404).send('The course with the given id was not found');
@@ -102,7 +102,7 @@ export let putCourse = async (req: Request, res: Response) => {
 export let deleteCourse = async (req: Request, res: Response) => {
 
     try{
-        const course = await CourseDB.findByIdAndDelete(req.params.id);
+        const course = await CourseModel.findByIdAndDelete(req.params.id);
         res.send(course);
     }
     catch(error){

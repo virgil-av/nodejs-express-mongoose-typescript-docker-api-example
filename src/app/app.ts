@@ -1,5 +1,6 @@
-import express from "express";
 import config from "config";
+import express from "express";
+import mongoose from "mongoose";
 import debug from "debug"
 
 // middleware
@@ -8,10 +9,9 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 // routers and controllers
-import coursesRouter from "./routes/courses.router";
 import indexRouter from "./routes/index.router";
-import mongoose from "mongoose";
-import testRouter from "./routes/test.router";
+import coursesRouter from "./routes/courses.router";
+import authorRouter from "./routes/author.router";
 
 
 /**
@@ -61,6 +61,6 @@ app.use(morgan('tiny'));
  */
 app.use('/', indexRouter);
 app.use('/api/courses', coursesRouter);
-app.use('/api/test', testRouter);
+app.use('/api/authors', authorRouter);
 
 export default app;

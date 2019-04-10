@@ -11,7 +11,8 @@ const courseSchema = new mongoose.Schema({
         // match: /pattern/
     },
     author: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'Author',
         required: true
     },
     category: {
@@ -61,6 +62,6 @@ const courseSchema = new mongoose.Schema({
     }
 });
 
-const CourseDB = mongoose.model('Course', courseSchema);
+const CourseModel = mongoose.model('Course', courseSchema);
 
-export default CourseDB;
+export default CourseModel;
