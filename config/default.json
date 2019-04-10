@@ -1,4 +1,5 @@
 {
   "env": "Development",
-  "viewsPath": "./dist/app/views"
+  "viewsPath": "./dist/app/views",
+  "mongodbUrl": "mongodb://localhost"
 }

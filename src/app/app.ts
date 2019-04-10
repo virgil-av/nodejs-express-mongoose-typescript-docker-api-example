@@ -7,33 +7,45 @@ import {authenticate} from "./middleware/authenticate";
 import helmet from "helmet";
 import morgan from "morgan";
 
-//controllers
-import * as homeController from './controllers/index';
-import * as coursesController from './controllers/courses';
+// routers and controllers
+import coursesRouter from "./routers/courses.router";
+import indexRouter from "./routers/index.router";
+import mongoose from "mongoose";
 
+
+/**
+ * Set debugger with namespace "app"
+ */
+const appDebug = debug('app:ts');
+const dbDebug = debug('app:db');
 
 /**
  * Create Express server
  */
 const app = express();
 
+
+/**
+ * Connect to database
+ */
+mongoose.connect(`${config.get('mongodbUrl')}/testDB`, {useNewUrlParser: true})
+    .then(() => {
+        dbDebug('Connected to mongoDB')
+    })
+    .catch(err => {
+        dbDebug('Could not connect to mongodb...', err)
+    });
+
+/**
+ * Testing debugger and environment config
+ */
+appDebug(`App is started in: ${config.get('env')} mode`);
+
 /**
  * Set render engine and views path
  */
 app.set('view engine', 'pug');
 app.set('views', config.get('viewsPath'));
-
-/**
- * Set debugger
- */
-const appDebug = debug('app');
-
-appDebug('App started');
-
-/**
- * console environment from config
- */
-console.log(`App is started in: ${config.get('env')} mode`);
 
 /**
  * Middleware
@@ -43,18 +55,10 @@ app.use(authenticate);
 app.use(helmet());
 app.use(morgan('tiny'));
 
-
 /**
- * Primary app routes.
+ * App routes.
  */
-app.get('/', homeController.index);
-
-// course controllers
-app.get('/api/courses', coursesController.getCourses);
-app.post('/api/courses', coursesController.postCourse);
-app.get('/api/courses/:id', coursesController.getCourse);
-app.put('/api/courses/:id', coursesController.putCourse);
-app.delete('/api/courses/:id', coursesController.deleteCourse);
-
+app.use('/', indexRouter);
+app.use('/api/courses', coursesRouter);
 
 export default app;
