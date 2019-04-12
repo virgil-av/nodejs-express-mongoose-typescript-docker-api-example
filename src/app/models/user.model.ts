@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const authorSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -8,19 +8,22 @@ const authorSchema = new mongoose.Schema({
         maxlength: 255,
         // match: /pattern/
     },
-    bio: {
+    email: {
         type: String,
         required: true,
         minlength: 5,
         maxlength: 255,
+        unique: true
     },
-    website: {
+    password: {
         type: String,
-        maxlength: 100,
+        required: true,
+        minlength: 5,
+        maxlength: 1024
     }
 });
 
-const AuthorModel = mongoose.model('Author', authorSchema);
+const UserModel = mongoose.model('User', userSchema);
 
-export default AuthorModel;
+export default UserModel;
 

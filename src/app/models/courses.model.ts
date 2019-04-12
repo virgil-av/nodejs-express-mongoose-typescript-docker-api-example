@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
+import AuthorModel from "./author.model";
 
-mongoose.set('useFindAndModify', false);
-
-const courseSchema = new mongoose.Schema({
+const courseSchema: any = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -15,6 +14,7 @@ const courseSchema = new mongoose.Schema({
         ref:'Author',
         required: true
     },
+    collaborators: [AuthorModel.schema],
     category: {
         type: String,
         required: true,

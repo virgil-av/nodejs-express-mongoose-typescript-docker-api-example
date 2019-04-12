@@ -1,7 +1,7 @@
-import {Course} from "../interfaces/course.interface";
 import Joi from "joi";
+import {Author} from "../interfaces/author.interface";
 
-export function authorValidators(course: Course){
+export function authorValidators(author: Author){
 
     const schema = {
         name: Joi.string().min(5).max(255).required(),
@@ -9,5 +9,5 @@ export function authorValidators(course: Course){
         website: Joi.string().max(100).optional().allow('')
     };
 
-    return Joi.validate(course, schema);
+    return Joi.validate(author, schema);
 }

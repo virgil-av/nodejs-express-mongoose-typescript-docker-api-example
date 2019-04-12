@@ -12,6 +12,7 @@ import morgan from "morgan";
 import indexRouter from "./routes/index.router";
 import coursesRouter from "./routes/courses.router";
 import authorRouter from "./routes/author.router";
+import userRouter from "./routes/users.router";
 
 
 /**
@@ -62,5 +63,6 @@ app.use(morgan('tiny'));
 app.use('/', indexRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/authors', authorRouter);
+app.use('/api/users', userRouter);
 
 export default app;

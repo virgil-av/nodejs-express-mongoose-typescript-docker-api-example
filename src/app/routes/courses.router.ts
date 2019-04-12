@@ -8,6 +8,7 @@ coursesRouter.post('/', coursesController.postCourse);
 coursesRouter.get('/:id', coursesController.getCourse);
 coursesRouter.put('/:id', coursesController.putCourse);
 coursesRouter.delete('/:id', coursesController.deleteCourse);
+coursesRouter.post('/:id/collaborators', coursesController.addCollaborators);
 
 
 export default coursesRouter;
