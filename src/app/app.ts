@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import debug from "debug"
 
 // middleware
-import {authenticate} from "./middleware/authenticate";
+import {auth} from "./middleware/authenticate";
 import helmet from "helmet";
 import morgan from "morgan";
 
@@ -13,6 +13,7 @@ import indexRouter from "./routes/index.router";
 import coursesRouter from "./routes/courses.router";
 import authorRouter from "./routes/author.router";
 import userRouter from "./routes/users.router";
+import authRouter from "./routes/auth.router";
 
 
 /**
@@ -25,6 +26,14 @@ const dbDebug = debug('app:db');
  * Create Express server
  */
 const app = express();
+
+/**
+ * Check if jwt private key is set
+ */
+if(!config.get('jwtPrivateKey')){
+    appDebug('FATAL ERROR jwtPrivateKey is not defined');
+    process.exit(1);
+}
 
 
 /**
@@ -53,7 +62,6 @@ app.set('views', config.get('viewsPath'));
  * Middleware
  */
 app.use(express.json()); // req.body
-app.use(authenticate);
 app.use(helmet());
 app.use(morgan('tiny'));
 
@@ -64,5 +72,6 @@ app.use('/', indexRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/authors', authorRouter);
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 export default app;

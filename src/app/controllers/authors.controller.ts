@@ -5,7 +5,7 @@ import {authorValidators} from "../validation/author.validators";
 
 
 /**
- * GET /api/courses
+ * GET /api/authors
  *
  */
 export let getAuthors = async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ export let getAuthors = async (req: Request, res: Response) => {
 };
 
 /**
- * POST /api/courses
+ * POST /api/authors
  *
  */
 export let createAuthor = async (req: Request, res: Response) => {
@@ -49,7 +49,7 @@ export let createAuthor = async (req: Request, res: Response) => {
 };
 
 /**
- * GET /api/courses/:id
+ * GET /api/authors/:id
  *
  */
 export let getAuthor = async (req: Request, res: Response) => {
@@ -70,7 +70,7 @@ export let getAuthor = async (req: Request, res: Response) => {
 };
 
 /**
- * PUT /api/courses/:id
+ * PUT /api/authors/:id
  *
  */
 export let editAuthor = async (req: Request, res: Response) => {
@@ -97,7 +97,7 @@ export let editAuthor = async (req: Request, res: Response) => {
 };
 
 /**
- * DELETE /api/courses/:id
+ * DELETE /api/authors/:id
  *
  */
 export let deleteAuthor = async (req: Request, res: Response) => {

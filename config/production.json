@@ -1,5 +1,6 @@
 {
   "env": "Production",
   "viewsPath": "./app/views",
-  "mongodbUrl": "mongodb://localhost"
+  "mongodbUrl": "mongodb://localhost",
+  "jwtPrivateKey": ""
 }

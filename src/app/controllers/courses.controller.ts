@@ -55,7 +55,7 @@ export let postCourse = async (req: Request, res: Response) => {
 export let getCourse = async (req: Request, res: Response) => {
 
     try{
-        const course = await CourseModel.findById(req.params.id);
+        const course = await CourseModel.findById(req.params.id).populate('author','name -_id'); // populate is used when referencing documents from other collections
 
         if (!course) {
             return res.status(404).send('The course with the given id was not found');

@@ -1,50 +1,39 @@
 import {Request, Response} from "express";
-import {authorValidators} from "../validation/author.validators";
 import UserModel from "../models/user.model";
+import {userValidators} from "../validation/user.validators";
+import _ from 'lodash';
+import bcrypt from 'bcrypt';
 
-
-/**
- * GET /api/users
- *
- */
-export let getUsers = async (req: Request, res: Response) => {
-    try{
-        const courses = await UserModel.find();
-        res.send(courses);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
-};
 
 /**
  * POST /api/users
  *
  */
 export let createUser = async (req: Request, res: Response) => {
-    const {error} = authorValidators(req.body); // returnedObject.error
+    const {error} = userValidators(req.body); // returnedObject.error
 
     if (error) {
         res.status(400).send(error);
         return;
     }
 
-    try{
-        const author = new UserModel(req.body);
-        const result =  await author.save();
+    let user: any = await UserModel.findOne({email: req.body.email});
 
-        res.send(result);
-    }
-    catch(error){
-        let errorMessages = [];
-
-        for(let key in error.errors){
-            errorMessages.push(error.errors[key]);
-        }
-
-        res.status(400).send(errorMessages);
+    if(user){
+        res.status(400).send('User already registered');
+        return;
     }
 
+    user = new UserModel(_.pick(req.body, ['name', 'email', 'password']));
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+
+    await user.save();
+
+    const token = user.generateAuthToken();
+
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
 };
 
 /**
@@ -53,18 +42,7 @@ export let createUser = async (req: Request, res: Response) => {
  */
 export let getUser = async (req: Request, res: Response) => {
 
-    try{
-        const author = await UserModel.findById(req.params.id);
-
-        if (!author) {
-            return res.status(404).send('The author with the given id was not found');
-        }
-
-        res.send(author);
-    }
-    catch(error){
-        return res.status(404).send('That is not a valid id');
-    }
+    res.status(404).send('Not implemented');
 
 };
 
@@ -74,24 +52,7 @@ export let getUser = async (req: Request, res: Response) => {
  */
 export let editUser = async (req: Request, res: Response) => {
 
-    const {error} = authorValidators(req.body); // returnedObject.error
-
-    if (error) {
-        res.status(400).send(error.details[0].message);
-        return;
-    }
-
-    try{
-        const author = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
-
-        if (!author) {
-            return res.status(404).send('The author with the given id was not found');
-        }
-        res.send(author);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+    res.status(404).send('Not implemented');
 
 };
 
@@ -101,13 +62,7 @@ export let editUser = async (req: Request, res: Response) => {
  */
 export let deleteUser = async (req: Request, res: Response) => {
 
-    try{
-        const author = await UserModel.findByIdAndDelete(req.params.id);
-        res.send(author);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+    res.status(404).send('Not implemented');
 
 };
 
