@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import debug from "debug"
 
 // middleware
-import {auth} from "./middleware/authenticate";
+import {auth} from "./middleware/auth";
 import helmet from "helmet";
 import morgan from "morgan";
 

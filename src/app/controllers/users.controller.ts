@@ -37,12 +37,13 @@ export let createUser = async (req: Request, res: Response) => {
 };
 
 /**
- * GET /api/users/:id
+ * GET /api/users/me
  *
  */
 export let getUser = async (req: Request, res: Response) => {
 
-    res.status(404).send('Not implemented');
+    const user = await UserModel.findById(req.user._id).select('-password');
+    res.send(user);
 
 };
 
