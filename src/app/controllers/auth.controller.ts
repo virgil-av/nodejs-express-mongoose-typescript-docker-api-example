@@ -1,14 +1,17 @@
+import express from "express";
 import {Request, Response} from "express";
 import UserModel from "../models/user.model";
 import bcrypt from 'bcrypt';
 import {authValidators} from "../validation/auth.validators";
+
+const authRouter = express.Router();
 
 
 /**
  * POST /api/users
  *
  */
-export let authUser = async (req: Request, res: Response) => {
+authRouter.post('/', async (req: Request, res: Response) => {
     const {error} = authValidators(req.body); // returnedObject.error
 
     if (error) {
@@ -33,4 +36,6 @@ export let authUser = async (req: Request, res: Response) => {
     const token = user.generateAuthToken();
 
     res.send(token);
-};
+});
+
+export default authRouter;

@@ -5,10 +5,11 @@ import 'express-async-errors';
 
 export function logger() {
     winston.handleExceptions(
-        new winston.transports.File({ filename: 'uncaughtExceptions.log' }));
+        new winston.transports.File({ filename: 'uncaughtExceptions.log' })
+    );
 
-    process.on('unhandledRejection', (ex) => {
-        throw ex;
+    process.on('unhandledRejection', (exception) => {
+        throw exception;
     });
 
     winston.add(winston.transports.File, { filename: 'logfile.log' });

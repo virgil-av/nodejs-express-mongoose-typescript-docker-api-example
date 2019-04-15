@@ -2,23 +2,26 @@ import {Request, Response} from "express";
 import AuthorModel from "../models/author.model";
 import {authorValidators} from "../validation/author.validators";
 
+import express from "express";
+
+const authorRouter = express.Router();
 
 /**
  * GET /api/authors
  *
  */
-export let getAuthors = async (req: Request, res: Response) => {
+authorRouter.get('/', async (req: Request, res: Response) => {
 
     const courses = await AuthorModel.find();
     res.send(courses);
 
-};
+});
 
 /**
  * POST /api/authors
  *
  */
-export let createAuthor = async (req: Request, res: Response) => {
+authorRouter.post('/', async (req: Request, res: Response) => {
     const {error} = authorValidators(req.body); // returnedObject.error
 
     if (error) {
@@ -31,13 +34,13 @@ export let createAuthor = async (req: Request, res: Response) => {
 
     res.send(result);
 
-};
+});
 
 /**
  * GET /api/authors/:id
  *
  */
-export let getAuthor = async (req: Request, res: Response) => {
+authorRouter.get('/:id', async (req: Request, res: Response) => {
 
 
     const author = await AuthorModel.findById(req.params.id);
@@ -48,13 +51,13 @@ export let getAuthor = async (req: Request, res: Response) => {
 
     res.send(author);
 
-};
+});
 
 /**
  * PUT /api/authors/:id
  *
  */
-export let editAuthor = async (req: Request, res: Response) => {
+authorRouter.put('/:id', async (req: Request, res: Response) => {
 
     const {error} = authorValidators(req.body); // returnedObject.error
 
@@ -71,16 +74,18 @@ export let editAuthor = async (req: Request, res: Response) => {
     }
     res.send(author);
 
-};
+});
 
 /**
  * DELETE /api/authors/:id
  *
  */
-export let deleteAuthor = async (req: Request, res: Response) => {
+authorRouter.delete('/:id', async (req: Request, res: Response) => {
 
     const author = await AuthorModel.findByIdAndDelete(req.params.id);
     res.send(author);
 
-};
+});
+
+export default authorRouter;
 

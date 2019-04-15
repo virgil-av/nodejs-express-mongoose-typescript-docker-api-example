@@ -1,8 +1,7 @@
-import app from './app/app'
-
+import app from './app';
 
 /**
- * Server listen
+ * Start Express server.
  */
 const port = process.env.PORT || 3000;
 

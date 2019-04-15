@@ -4,21 +4,24 @@ import CourseModel from "../models/courses.model";
 import {authorValidators} from "../validation/author.validators";
 import mongoose from 'mongoose';
 
+import express from "express";
+const coursesRouter = express.Router();
+
 /**
  * GET /api/courses
  *
  */
-export let getCourses = async (req: Request, res: Response) => {
+coursesRouter.get('/', async (req: Request, res: Response) => {
 
     const courses = await CourseModel.find().populate('author', 'name -_id'); // populate the author from another collection and only display the name
     res.send(courses);
-};
+});
 
 /**
  * POST /api/courses
  *
  */
-export let postCourse = async (req: Request, res: Response) => {
+coursesRouter.post('/', async (req: Request, res: Response) => {
     const {error} = courseValidators(req.body); // returnedObject.error
 
     if (error) {
@@ -30,13 +33,13 @@ export let postCourse = async (req: Request, res: Response) => {
     const result = await course.save();
 
     res.send(result);
-};
+});
 
 /**
  * GET /api/courses/:id
  *
  */
-export let getCourse = async (req: Request, res: Response) => {
+coursesRouter.get('/:id', async (req: Request, res: Response) => {
 
 
     const course = await CourseModel.findById(req.params.id).populate('author', 'name -_id'); // populate is used when referencing documents from other collections
@@ -46,13 +49,13 @@ export let getCourse = async (req: Request, res: Response) => {
     }
 
     res.send(course);
-};
+});
 
 /**
  * PUT /api/courses/:id
  *
  */
-export let putCourse = async (req: Request, res: Response) => {
+coursesRouter.put('/:id', async (req: Request, res: Response) => {
 
     const {error} = courseValidators(req.body); // returnedObject.error
 
@@ -67,23 +70,23 @@ export let putCourse = async (req: Request, res: Response) => {
         return res.status(404).send('The course with the given id was not found');
     }
     res.send(course);
-};
+});
 
 /**
  * DELETE /api/courses/:id
  *
  */
-export let deleteCourse = async (req: Request, res: Response) => {
+coursesRouter.delete('/:id', async (req: Request, res: Response) => {
 
     const course = await CourseModel.findByIdAndDelete(req.params.id);
     res.send(course);
-};
+});
 
 /**
  * POST /api/courses/:id/collaborators
  *
  */
-export let addCollaborators = async (req: Request, res: Response) => {
+coursesRouter.post('/:id/collaborators', async (req: Request, res: Response) => {
 
     const {error} = authorValidators(req.body); // returnedObject.error
 
@@ -106,5 +109,6 @@ export let addCollaborators = async (req: Request, res: Response) => {
     course.save();
 
     res.send(course);
-};
+});
 
+export default coursesRouter;

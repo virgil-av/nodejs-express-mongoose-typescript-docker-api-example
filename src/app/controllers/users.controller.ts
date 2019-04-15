@@ -3,13 +3,14 @@ import UserModel from "../models/user.model";
 import {userValidators} from "../validation/user.validators";
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
-
+import express from "express";
+const userRouter = express.Router();
 
 /**
  * POST /api/users
  *
  */
-export let createUser = async (req: Request, res: Response) => {
+userRouter.post('/', async (req: Request, res: Response) => {
     const {error} = userValidators(req.body); // returnedObject.error
 
     if (error) {
@@ -34,36 +35,37 @@ export let createUser = async (req: Request, res: Response) => {
     const token = user.generateAuthToken();
 
     res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
-};
+});
 
 /**
  * GET /api/users/me
  *
  */
-export let getUser = async (req: Request, res: Response) => {
+userRouter.get('/me', async (req: Request, res: Response) => {
 
     const user = await UserModel.findById(req.user._id).select('-password');
     res.send(user);
 
-};
+});
 
 /**
  * PUT /api/users/:id
  *
  */
-export let editUser = async (req: Request, res: Response) => {
+userRouter.put('/me', async (req: Request, res: Response) => {
 
     res.status(404).send('Not implemented');
 
-};
+});
 
 /**
  * DELETE /api/users/:id
  *
  */
-export let deleteUser = async (req: Request, res: Response) => {
+userRouter.delete('/me', async (req: Request, res: Response) => {
 
     res.status(404).send('Not implemented');
 
-};
+});
 
+export default userRouter;
