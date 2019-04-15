@@ -9,13 +9,9 @@ import mongoose from 'mongoose';
  *
  */
 export let getCourses = async (req: Request, res: Response) => {
-    try{
-        const courses = await CourseModel.find().populate('author','name -_id'); // populate the author from another collection and only display the name
-        res.send(courses);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+
+    const courses = await CourseModel.find().populate('author', 'name -_id'); // populate the author from another collection and only display the name
+    res.send(courses);
 };
 
 /**
@@ -30,22 +26,10 @@ export let postCourse = async (req: Request, res: Response) => {
         return;
     }
 
-    try{
-        const course = new CourseModel(req.body);
-        const result =  await course.save();
+    const course = new CourseModel(req.body);
+    const result = await course.save();
 
-        res.send(result);
-    }
-    catch(error){
-        let errorMessages = [];
-
-        for(let key in error.errors){
-            errorMessages.push(error.errors[key]);
-        }
-
-        res.status(400).send(errorMessages);
-    }
-
+    res.send(result);
 };
 
 /**
@@ -54,19 +38,14 @@ export let postCourse = async (req: Request, res: Response) => {
  */
 export let getCourse = async (req: Request, res: Response) => {
 
-    try{
-        const course = await CourseModel.findById(req.params.id).populate('author','name -_id'); // populate is used when referencing documents from other collections
 
-        if (!course) {
-            return res.status(404).send('The course with the given id was not found');
-        }
+    const course = await CourseModel.findById(req.params.id).populate('author', 'name -_id'); // populate is used when referencing documents from other collections
 
-        res.send(course);
-    }
-    catch(error){
-        return res.status(404).send('That is not a valid id: ' + error);
+    if (!course) {
+        return res.status(404).send('The course with the given id was not found');
     }
 
+    res.send(course);
 };
 
 /**
@@ -82,18 +61,12 @@ export let putCourse = async (req: Request, res: Response) => {
         return;
     }
 
-    try{
-        const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
-        if (!course) {
-            return res.status(404).send('The course with the given id was not found');
-        }
-        res.send(course);
+    if (!course) {
+        return res.status(404).send('The course with the given id was not found');
     }
-    catch(error){
-        res.status(400).send(error.message);
-    }
-
+    res.send(course);
 };
 
 /**
@@ -102,14 +75,8 @@ export let putCourse = async (req: Request, res: Response) => {
  */
 export let deleteCourse = async (req: Request, res: Response) => {
 
-    try{
-        const course = await CourseModel.findByIdAndDelete(req.params.id);
-        res.send(course);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
-
+    const course = await CourseModel.findByIdAndDelete(req.params.id);
+    res.send(course);
 };
 
 /**
@@ -129,21 +96,15 @@ export let addCollaborators = async (req: Request, res: Response) => {
         return res.status(400).send(`${req.params.id} is not a valid id`);
     }
 
-    try{
-        const course: any = await CourseModel.findById(req.params.id);
+    const course: any = await CourseModel.findById(req.params.id);
 
-        if (!course) {
-            return res.status(404).send(`The course with id ${req.params.id} was not found`);
-        }
-
-        course.collaborators.push(req.body);
-        course.save();
-
-        res.send(course);
-    }
-    catch(error){
-        res.status(400).send(error.message);
+    if (!course) {
+        return res.status(404).send(`The course with id ${req.params.id} was not found`);
     }
 
+    course.collaborators.push(req.body);
+    course.save();
+
+    res.send(course);
 };
 

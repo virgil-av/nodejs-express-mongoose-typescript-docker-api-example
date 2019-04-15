@@ -3,19 +3,15 @@ import AuthorModel from "../models/author.model";
 import {authorValidators} from "../validation/author.validators";
 
 
-
 /**
  * GET /api/authors
  *
  */
 export let getAuthors = async (req: Request, res: Response) => {
-    try{
-        const courses = await AuthorModel.find();
-        res.send(courses);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+
+    const courses = await AuthorModel.find();
+    res.send(courses);
+
 };
 
 /**
@@ -30,21 +26,10 @@ export let createAuthor = async (req: Request, res: Response) => {
         return;
     }
 
-    try{
-        const author = new AuthorModel(req.body);
-        const result =  await author.save();
+    const author = new AuthorModel(req.body);
+    const result = await author.save();
 
-        res.send(result);
-    }
-    catch(error){
-        let errorMessages = [];
-
-        for(let key in error.errors){
-            errorMessages.push(error.errors[key]);
-        }
-
-        res.status(400).send(errorMessages);
-    }
+    res.send(result);
 
 };
 
@@ -54,18 +39,14 @@ export let createAuthor = async (req: Request, res: Response) => {
  */
 export let getAuthor = async (req: Request, res: Response) => {
 
-    try{
-        const author = await AuthorModel.findById(req.params.id);
 
-        if (!author) {
-            return res.status(404).send('The author with the given id was not found');
-        }
+    const author = await AuthorModel.findById(req.params.id);
 
-        res.send(author);
+    if (!author) {
+        return res.status(404).send('The author with the given id was not found');
     }
-    catch(error){
-        return res.status(404).send('That is not a valid id');
-    }
+
+    res.send(author);
 
 };
 
@@ -82,17 +63,13 @@ export let editAuthor = async (req: Request, res: Response) => {
         return;
     }
 
-    try{
-        const author = await AuthorModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
-        if (!author) {
-            return res.status(404).send('The author with the given id was not found');
-        }
-        res.send(author);
+    const author = await AuthorModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
+
+    if (!author) {
+        return res.status(404).send('The author with the given id was not found');
     }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+    res.send(author);
 
 };
 
@@ -102,13 +79,8 @@ export let editAuthor = async (req: Request, res: Response) => {
  */
 export let deleteAuthor = async (req: Request, res: Response) => {
 
-    try{
-        const author = await AuthorModel.findByIdAndDelete(req.params.id);
-        res.send(author);
-    }
-    catch(error){
-        res.status(400).send(error.message);
-    }
+    const author = await AuthorModel.findByIdAndDelete(req.params.id);
+    res.send(author);
 
 };
 

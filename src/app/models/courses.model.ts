@@ -48,7 +48,6 @@ const courseSchema: any = new mongoose.Schema({
     price: {
         type: Number,
         required: function () {
-            console.log(this.isPublished);
             return this.isPublished
         },
         min: 10,

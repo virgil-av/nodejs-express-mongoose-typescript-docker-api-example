@@ -2,11 +2,18 @@ import config from "config";
 import express from "express";
 import mongoose from "mongoose";
 import debug from "debug"
+// monkeypatch to reduce the try catch blocks
+import 'express-async-errors';
+
+// logging
+const winston = require('winston');
+import {logger} from "./utils/logger";
+logger();
 
 // middleware
-import {auth} from "./middleware/auth";
 import helmet from "helmet";
 import morgan from "morgan";
+import {errorHandler} from "./middleware/error-handler";
 
 // routers and controllers
 import indexRouter from "./routes/index.router";
@@ -39,7 +46,7 @@ if(!config.get('jwtPrivateKey')){
 /**
  * Connect to database
  */
-mongoose.connect(`${config.get('mongodbUrl')}/testDB`, {useNewUrlParser: true})
+mongoose.connect(config.get('mongodbUrl'), {useNewUrlParser: true})
     .then(() => {
         dbDebug('Connected to mongoDB')
     })
@@ -73,5 +80,10 @@ app.use('/api/courses', coursesRouter);
 app.use('/api/authors', authorRouter);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+
+/**
+ * Handle error after routes.
+ */
+app.use(errorHandler);
 
 export default app;
