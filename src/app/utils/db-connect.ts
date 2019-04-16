@@ -8,7 +8,4 @@ export function connectDB(){
         .then(() => {
             winston.info('Connected to MongoDB...');
         })
-        .catch(err => {
-            winston.error('Could not connect to MongoDB');
-        });
 }

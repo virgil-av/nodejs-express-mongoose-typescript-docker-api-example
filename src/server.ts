@@ -1,11 +1,10 @@
 import config from "config";
 import express from "express";
-import 'express-async-errors';
 // middleware
 import helmet from "helmet";
 import morgan from "morgan";
 // startup
-import {logger} from "./app/utils/logger";
+import {initLogger} from "./app/utils/logger";
 import {initRoutes} from "./app/routes";
 import {connectDB} from "./app/utils/db-connect";
 import {initConfig} from "./app/utils/config";
@@ -19,7 +18,7 @@ const app = express();
 /**
  * Enable logging
  */
-logger();
+initLogger();
 
 /**
  * Initialise app Middleware
@@ -61,3 +60,5 @@ app.listen(port, () => {
     );
     console.log("  Press CTRL-C to stop\n");
 });
+
+export default app;
