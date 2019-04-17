@@ -1,7 +1,8 @@
-import mongoose from 'mongoose';
-import AuthorModel from "./author.model";
+import {Model, model, Schema} from 'mongoose';
+import {AuthorModel} from "./author.model";
+import {ICourseModel} from "../interfaces/course.interface";
 
-const courseSchema: any = new mongoose.Schema({
+const courseSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -10,7 +11,7 @@ const courseSchema: any = new mongoose.Schema({
         // match: /pattern/
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref:'Author',
         required: true
     },
@@ -61,6 +62,4 @@ const courseSchema: any = new mongoose.Schema({
     }
 });
 
-const CourseModel = mongoose.model('Course', courseSchema);
-
-export default CourseModel;
+export const CourseModel: Model<ICourseModel> = model<ICourseModel>('Course', courseSchema);

@@ -1,7 +1,7 @@
-import config from "config";
+import {get} from "config";
 
 export function initConfig(){
-    if(!config.get('jwtPrivateKey')){
+    if(!get('jwtPrivateKey')){
         throw new Error('FATAL ERROR: jwtPrivateKey is not defined.');
     }
 }

@@ -1,10 +1,10 @@
-import express from "express";
-import {Request, Response} from "express";
-import UserModel from "../models/user.model";
-import bcrypt from 'bcrypt';
+import {Request, Response, Router} from "express";
+import {UserModel} from "../models/user.model";
+import {compare} from 'bcrypt';
 import {authValidators} from "../validation/auth.validators";
 
-const authRouter = express.Router();
+
+export const authRouter = Router();
 
 
 /**
@@ -26,7 +26,7 @@ authRouter.post('/', async (req: Request, res: Response) => {
         return;
     }
 
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    const validPassword = await compare(req.body.password, user.password);
 
     if(!validPassword){
         res.status(400).send('Invalid email or password');
@@ -38,4 +38,4 @@ authRouter.post('/', async (req: Request, res: Response) => {
     res.send(token);
 });
 
-export default authRouter;
+

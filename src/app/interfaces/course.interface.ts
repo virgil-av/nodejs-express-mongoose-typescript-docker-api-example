@@ -1,12 +1,20 @@
-import {Author} from "./author.interface";
+import {Document} from 'mongoose';
+import {AuthorDTO} from "./author.interface";
 
-export interface Course {
-    _id: string;
+export interface ICourse {
     name: string;
-    tags: string[];
-    author: Author;
-    isPublished: boolean;
+    author: string;
     category: string;
+    tags: string[];
+    isPublished: boolean;
+    price?: number;
+}
+
+export interface ICourseModel extends ICourse, Document {
     date: Date;
-    __v: number;
+    collaborators?: AuthorDTO[];
+}
+
+export interface CourseDTO extends ICourse {
+    _id: string;
 }

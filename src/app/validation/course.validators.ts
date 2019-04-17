@@ -1,7 +1,7 @@
-import {Course} from "../interfaces/course.interface";
+import {ICourse} from "../interfaces/course.interface";
 import Joi from "joi";
 
-export function courseValidators(course: Course){
+export function courseValidators(course: ICourse){
 
     const schema = {
         name: Joi.string().min(3).required(),
@@ -12,7 +12,7 @@ export function courseValidators(course: Course){
             is: Joi.boolean().valid(true).required(),
             then: Joi.required(),
             otherwise: Joi.optional()}),
-        category: Joi.string()
+        category: Joi.string().required()
     };
 
     return Joi.validate(course, schema);

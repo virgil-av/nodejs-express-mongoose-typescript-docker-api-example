@@ -1,10 +1,11 @@
-import {Request, Response} from "express";
-import UserModel from "../models/user.model";
+import {Request, Response, Router} from "express";
+import {UserModel} from "../models/user.model";
 import {userValidators} from "../validation/user.validators";
-import _ from 'lodash';
-import bcrypt from 'bcrypt';
-import express from "express";
-const userRouter = express.Router();
+import {pick} from 'lodash';
+import {genSalt, hash} from "bcrypt";
+
+
+export const userRouter = Router();
 
 /**
  * POST /api/users
@@ -25,16 +26,16 @@ userRouter.post('/', async (req: Request, res: Response) => {
         return;
     }
 
-    user = new UserModel(_.pick(req.body, ['name', 'email', 'password']));
+    user = new UserModel(pick(req.body, ['name', 'email', 'password']));
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
+    const salt = await genSalt(10);
+    user.password = await hash(user.password, salt);
 
     await user.save();
 
     const token = user.generateAuthToken();
 
-    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+    res.header('x-auth-token', token).send(pick(user, ['_id', 'name', 'email']));
 });
 
 /**
@@ -67,5 +68,3 @@ userRouter.delete('/me', async (req: Request, res: Response) => {
     res.status(404).send('Not implemented');
 
 });
-
-export default userRouter;

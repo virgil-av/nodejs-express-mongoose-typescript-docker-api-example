@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import {Model, model, Schema} from 'mongoose';
+import {IAuthorModel} from "../interfaces/author.interface";
 
-const authorSchema = new mongoose.Schema({
+const authorSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -20,7 +21,7 @@ const authorSchema = new mongoose.Schema({
     }
 });
 
-const AuthorModel = mongoose.model('Author', authorSchema);
+export const AuthorModel: Model<IAuthorModel> = model<IAuthorModel>('Author', authorSchema);
 
-export default AuthorModel;
+
 

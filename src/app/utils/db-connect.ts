@@ -1,11 +1,13 @@
-import config from "config";
-import mongoose from "mongoose";
+import {get} from "config";
+import {connect} from "mongoose";
 import winston from 'winston';
 
 
 export function connectDB(){
-    mongoose.connect(config.get('mongodbUrl'), {useNewUrlParser: true})
+    const db: string = get('mongodbUrl');
+
+    connect(db, {useNewUrlParser: true})
         .then(() => {
-            winston.info('Connected to MongoDB...');
+            winston.info(`Connected to ${get('mongodbUrl')}...`);
         })
 }

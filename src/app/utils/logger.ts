@@ -1,4 +1,4 @@
-import config from "config";
+import {get} from "config";
 import winston from 'winston';
 import 'winston-mongodb';
 import 'express-async-errors'; // used to handle try catch errors
@@ -14,7 +14,7 @@ export function initLogger() {
 
     winston.add(winston.transports.File, { filename: 'logfile.log' });
     winston.add(winston.transports.MongoDB, {
-        db: config.get('mongodbUrl'),
+        db: get('mongodbUrl'),
         level: 'info'
     });
 }

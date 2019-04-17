@@ -1,11 +1,12 @@
-import {Request, Response} from "express";
+import {Request, Response, Router} from "express";
 import {courseValidators} from "../validation/course.validators";
-import CourseModel from "../models/courses.model";
+import {CourseModel} from "../models/courses.model";
 import {authorValidators} from "../validation/author.validators";
-import mongoose from 'mongoose';
+import {Types} from 'mongoose';
+import {validateObjectId} from "../middleware/validate-objectid";
+import {auth} from "../middleware/auth";
 
-import express from "express";
-const coursesRouter = express.Router();
+export const coursesRouter = Router();
 
 /**
  * GET /api/courses
@@ -21,12 +22,16 @@ coursesRouter.get('/', async (req: Request, res: Response) => {
  * POST /api/courses
  *
  */
-coursesRouter.post('/', async (req: Request, res: Response) => {
+coursesRouter.post('/', auth, async (req: Request, res: Response) => {
     const {error} = courseValidators(req.body); // returnedObject.error
 
     if (error) {
         res.status(400).send(error.details[0].message);
         return;
+    }
+
+    if (!Types.ObjectId.isValid(req.body.author)) {
+        return res.status(400).send("Invalid object id for author");
     }
 
     const course = new CourseModel(req.body);
@@ -39,8 +44,7 @@ coursesRouter.post('/', async (req: Request, res: Response) => {
  * GET /api/courses/:id
  *
  */
-coursesRouter.get('/:id', async (req: Request, res: Response) => {
-
+coursesRouter.get('/:id', validateObjectId, async (req: Request, res: Response) => {
 
     const course = await CourseModel.findById(req.params.id).populate('author', 'name -_id'); // populate is used when referencing documents from other collections
 
@@ -55,7 +59,7 @@ coursesRouter.get('/:id', async (req: Request, res: Response) => {
  * PUT /api/courses/:id
  *
  */
-coursesRouter.put('/:id', async (req: Request, res: Response) => {
+coursesRouter.put('/:id', auth, async (req: Request, res: Response) => {
 
     const {error} = courseValidators(req.body); // returnedObject.error
 
@@ -76,7 +80,7 @@ coursesRouter.put('/:id', async (req: Request, res: Response) => {
  * DELETE /api/courses/:id
  *
  */
-coursesRouter.delete('/:id', async (req: Request, res: Response) => {
+coursesRouter.delete('/:id', auth, async (req: Request, res: Response) => {
 
     const course = await CourseModel.findByIdAndDelete(req.params.id);
     res.send(course);
@@ -86,7 +90,7 @@ coursesRouter.delete('/:id', async (req: Request, res: Response) => {
  * POST /api/courses/:id/collaborators
  *
  */
-coursesRouter.post('/:id/collaborators', async (req: Request, res: Response) => {
+coursesRouter.post('/:id/collaborators', auth, async (req: Request, res: Response) => {
 
     const {error} = authorValidators(req.body); // returnedObject.error
 
@@ -95,7 +99,7 @@ coursesRouter.post('/:id/collaborators', async (req: Request, res: Response) => 
         return;
     }
 
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    if (!Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).send(`${req.params.id} is not a valid id`);
     }
 
@@ -110,5 +114,3 @@ coursesRouter.post('/:id/collaborators', async (req: Request, res: Response) => 
 
     res.send(course);
 });
-
-export default coursesRouter;

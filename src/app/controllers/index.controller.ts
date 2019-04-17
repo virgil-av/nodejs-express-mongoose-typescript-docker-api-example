@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
-import express from "express";
-const indexRouter = express.Router();
+import { Request, Response, Router} from "express";
 
+export const indexRouter = Router();
 
 /**
  * GET /
@@ -13,5 +12,3 @@ indexRouter.get('/', (req: Request, res: Response) => {
         message: 'hello'
     })
 });
-
-export default indexRouter;

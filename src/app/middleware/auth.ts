@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express";
-import jwt from 'jsonwebtoken';
+import {verify} from 'jsonwebtoken';
 import config from "config";
 
 export function auth(req: Request, res: Response, next: NextFunction){
@@ -10,7 +10,7 @@ export function auth(req: Request, res: Response, next: NextFunction){
     }
 
     try{
-        req.user = jwt.verify(token,config.get('jwtPrivateKey'));
+        req.user = verify(token,config.get('jwtPrivateKey'));
         next();
     }
     catch(error){

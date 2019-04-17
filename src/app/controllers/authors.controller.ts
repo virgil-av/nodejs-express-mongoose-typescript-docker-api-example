@@ -1,10 +1,8 @@
-import {Request, Response} from "express";
-import AuthorModel from "../models/author.model";
+import {Request, Response, Router} from "express";
+import {AuthorModel} from "../models/author.model";
 import {authorValidators} from "../validation/author.validators";
 
-import express from "express";
-
-const authorRouter = express.Router();
+export const authorRouter = Router();
 
 /**
  * GET /api/authors
@@ -86,6 +84,3 @@ authorRouter.delete('/:id', async (req: Request, res: Response) => {
     res.send(author);
 
 });
-
-export default authorRouter;
-

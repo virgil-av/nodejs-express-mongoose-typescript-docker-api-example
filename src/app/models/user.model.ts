@@ -1,8 +1,9 @@
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
+import {Schema, Model, model} from 'mongoose';
 import config from "config";
+import {IUserModel} from "../interfaces/user.interface";
+import {sign} from "jsonwebtoken";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -23,14 +24,12 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     },
-    isAdmin: Boolean
+    isAdmin: Boolean,
 });
 
 userSchema.methods.generateAuthToken = function(){
-    return jwt.sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
+    return sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
 
-const UserModel = mongoose.model('User', userSchema);
-
-export default UserModel;
+export const UserModel: Model<IUserModel> = model<IUserModel>('User', userSchema);
 
