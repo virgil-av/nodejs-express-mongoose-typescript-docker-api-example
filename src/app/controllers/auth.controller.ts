@@ -35,7 +35,7 @@ authRouter.post('/', async (req: Request, res: Response) => {
 
     const token = user.generateAuthToken();
 
-    res.send(token);
+    res.send({auth_token: token});
 });
 
 

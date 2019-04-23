@@ -10,7 +10,7 @@ export interface IAuthorModel extends IAuthor, Document {
 }
 
 export interface AuthorDTO extends IAuthorModel {
-    _id: Schema.Types.ObjectId;
+    _id: string;
 }
 
 

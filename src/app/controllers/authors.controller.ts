@@ -1,6 +1,7 @@
 import {Request, Response, Router} from "express";
 import {AuthorModel} from "../models/author.model";
 import {authorValidators} from "../validation/author.validators";
+import {Types} from "mongoose";
 
 export const authorRouter = Router();
 
@@ -40,6 +41,9 @@ authorRouter.post('/', async (req: Request, res: Response) => {
  */
 authorRouter.get('/:id', async (req: Request, res: Response) => {
 
+    if (!Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).send(`${req.params.id} is not a valid id`);
+    }
 
     const author = await AuthorModel.findById(req.params.id);
 

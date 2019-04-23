@@ -53,7 +53,7 @@ app.set('views', config.get('viewsPath'));
  */
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
     console.log(
         `  App is running at http://localhost:${port} in %s mode`,
         app.get("env")

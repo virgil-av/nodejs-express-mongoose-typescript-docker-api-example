@@ -1,9 +1,9 @@
 import {Document} from 'mongoose';
 
 export interface IUser {
-    email?: string;
-    firstName?: string;
-    lastName?: string;
+    email: string;
+    password: string;
+    name?: string;
 }
 
 export interface IUserModel extends IUser, Document {

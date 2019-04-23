@@ -5,6 +5,7 @@ import {authorValidators} from "../validation/author.validators";
 import {Types} from 'mongoose';
 import {validateObjectId} from "../middleware/validate-objectid";
 import {auth} from "../middleware/auth";
+import {admin} from "../middleware/admin";
 
 export const coursesRouter = Router();
 
@@ -68,11 +69,16 @@ coursesRouter.put('/:id', auth, async (req: Request, res: Response) => {
         return;
     }
 
+    if (!Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).send(`${req.params.id} is not a valid id`);
+    }
+
     const course = await CourseModel.findByIdAndUpdate(req.params.id, req.body, {new: true});
 
     if (!course) {
         return res.status(404).send('The course with the given id was not found');
     }
+
     res.send(course);
 });
 
@@ -80,7 +86,7 @@ coursesRouter.put('/:id', auth, async (req: Request, res: Response) => {
  * DELETE /api/courses/:id
  *
  */
-coursesRouter.delete('/:id', auth, async (req: Request, res: Response) => {
+coursesRouter.delete('/:id', [auth, admin], async (req: Request, res: Response) => {
 
     const course = await CourseModel.findByIdAndDelete(req.params.id);
     res.send(course);
