@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+        mongo:
+                image: mongo
+                restart: always
+                ports:
+                        - 27017:27017
+                environment:
+                        # creating a database when container is initialised
+                        MONGO_INITDB_DATABASE: defaultDB
+                        MONGO_INITDB_ROOT_USERNAME: root
+                        MONGO_INITDB_ROOT_PASSWORD: example
+                volumes:
+                        # create a new user admin password and give it readWrite access to defaultDB
+                        - ./mongo/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+
+        mongo-express:
+                # graphic interface for mongodb
+                image: mongo-express
+                restart: always
+                ports:
+                        - 8081:8081
+                environment:
+                        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+                        ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+        demo-app:
+                build:
+                        context: .
+                        dockerfile: Dockerfile
+                depends_on:
+                        - mongo
+                volumes:
+                        #Use the local app folder, but use a named volume for node_modules. This avoids conflicts with the local system.
+                        - ./:/app
+                        - node-modules:/app/node_modules
+                ports:
+                        - 8888:8888
+                environment:
+                        - NODE_ENV=production
+                        - PORT=8888
+                        - app_jwtPrivateKey=testPrivateKey
+                        - app_mongodbUrl=mongodb://admin:password@mongo:27017/defaultDB
+                command: "npm start"
+
+volumes:
+        #Configure shared volumes to be used in the services above.
+        node-modules:

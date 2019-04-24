@@ -1,3 +1,5 @@
 {
-  "jwtPrivateKey": "app_jwtPrivateKey"
+  "jwtPrivateKey": "app_jwtPrivateKey",
+  "mongodbUrl": "app_mongodbUrl"
+
 }

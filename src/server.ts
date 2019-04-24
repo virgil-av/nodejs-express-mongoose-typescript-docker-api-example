@@ -1,13 +1,14 @@
 import config from "config";
 import express from "express";
 // middleware
-import helmet from "helmet";
+
 import morgan from "morgan";
 // startup
 import {initLogger} from "./app/utils/logger";
 import {initRoutes} from "./app/routes";
 import {connectDB} from "./app/utils/db-connect";
 import {initConfig} from "./app/utils/config";
+import {prodMiddleware} from "./app/utils/prod";
 
 
 /**
@@ -23,7 +24,7 @@ initLogger();
 /**
  * Initialise app Middleware
  */
-app.use(helmet());
+prodMiddleware(app);
 app.use(morgan('tiny'));
 
 /**
