@@ -12,6 +12,8 @@ services:
                         MONGO_INITDB_ROOT_USERNAME: root
                         MONGO_INITDB_ROOT_PASSWORD: example
                 volumes:
+                        - mongo-db:/data/db
+                        - mongo-configdb:/data/configdb
                         # create a new user admin password and give it readWrite access to defaultDB
                         - ./mongo/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
 
@@ -47,3 +49,5 @@ services:
 volumes:
         #Configure shared volumes to be used in the services above.
         app-node-modules:
+        mongo-db:
+        mongo-configdb:

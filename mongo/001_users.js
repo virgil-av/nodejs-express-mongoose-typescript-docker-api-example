@@ -10,3 +10,20 @@ db.createUser(
         ]
     }
 );
+
+
+testsDB = db.getSiblingDB('testsDB');
+
+testsDB.createUser(
+    {
+        user: "tests",
+        pwd: "password",
+        roles:[
+            {
+                role: "readWrite",
+                db:   "testsDB"
+            }
+        ]
+    }
+);
+
