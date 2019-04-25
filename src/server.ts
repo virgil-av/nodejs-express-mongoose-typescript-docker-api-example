@@ -1,14 +1,14 @@
-import config from "config";
-import express from "express";
+import config from 'config';
+import express from 'express';
 // middleware
 
-import morgan from "morgan";
+import morgan from 'morgan';
 // startup
-import {initLogger} from "./app/utils/logger";
-import {initRoutes} from "./app/routes";
-import {connectDB} from "./app/utils/db-connect";
-import {initConfig} from "./app/utils/config";
-import {prodMiddleware} from "./app/utils/prod";
+import { initLogger } from './app/utils/logger';
+import { initRoutes } from './app/routes';
+import { connectDB } from './app/utils/db-connect';
+import { initConfig } from './app/utils/config';
+import { prodMiddleware } from './app/utils/prod';
 
 
 /**
@@ -57,9 +57,9 @@ const port = process.env.PORT || 3000;
 export const server = app.listen(port, () => {
     console.log(
         `  App is running at http://localhost:${port} in %s mode`,
-        app.get("env")
+        app.get('env')
     );
-    console.log("  Press CTRL-C to stop\n");
+    console.log('  Press CTRL-C to stop\n');
 });
 
 

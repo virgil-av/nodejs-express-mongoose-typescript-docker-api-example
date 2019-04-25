@@ -1,7 +1,7 @@
-import request from "supertest";
-import app, {server} from "../../../server";
-import {CourseModel} from "../../../app/models/courses.model";
-import {UserModel} from "../../../app/models/user.model";
+import request from 'supertest';
+import app, { server } from '../../../server';
+import { CourseModel } from '../../../app/models/courses.model';
+import { UserModel } from '../../../app/models/user.model';
 
 
 describe('testing auth middleware', () => {
@@ -11,12 +11,12 @@ describe('testing auth middleware', () => {
         return await request(app).post(`/api/courses`)
             .set('x-auth-token', token)
             .send({
-                "tags": ["test"],
-                "name": "Test 1",
-                "author": "5cb0b9fa67be6d7b9fca2dbb",
-                "isPublished": true,
-                "price": 100,
-                "category": "backend"
+                'tags': ['test'],
+                'name': 'Test 1',
+                'author': '5cb0b9fa67be6d7b9fca2dbb',
+                'isPublished': true,
+                'price': 100,
+                'category': 'backend'
             });
     };
 

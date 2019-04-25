@@ -1,5 +1,5 @@
-import {Model, model, Schema} from 'mongoose';
-import {IAuthorModel} from "../interfaces/author.interface";
+import { Model, model, Schema } from 'mongoose';
+import { IAuthorModel } from '../interfaces/author.interface';
 
 const authorSchema = new Schema({
     name: {

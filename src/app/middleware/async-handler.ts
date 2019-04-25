@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * Using a factory to handle the try catch block, keeping the controllers cleaner
@@ -11,5 +11,5 @@ export function asyncHandler(handle: (req: Request, res: Response, next?: NextFu
         } catch (error) {
             next(error);
         }
-    }
+    };
 }

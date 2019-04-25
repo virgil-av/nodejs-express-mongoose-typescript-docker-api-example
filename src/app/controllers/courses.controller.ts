@@ -1,11 +1,11 @@
-import {Request, Response, Router} from "express";
-import {courseValidators} from "../validation/course.validators";
-import {CourseModel} from "../models/courses.model";
-import {authorValidators} from "../validation/author.validators";
-import {Types} from 'mongoose';
-import {validateObjectId} from "../middleware/validate-objectid";
-import {auth} from "../middleware/auth";
-import {admin} from "../middleware/admin";
+import { Request, Response, Router } from 'express';
+import { courseValidators } from '../validation/course.validators';
+import { CourseModel } from '../models/courses.model';
+import { authorValidators } from '../validation/author.validators';
+import { Types } from 'mongoose';
+import { validateObjectId } from '../middleware/validate-objectid';
+import { auth } from '../middleware/auth';
+import { admin } from '../middleware/admin';
 
 export const coursesRouter = Router();
 
@@ -32,7 +32,7 @@ coursesRouter.post('/', auth, async (req: Request, res: Response) => {
     }
 
     if (!Types.ObjectId.isValid(req.body.author)) {
-        return res.status(400).send("Invalid object id for author");
+        return res.status(400).send('Invalid object id for author');
     }
 
     const course = new CourseModel(req.body);

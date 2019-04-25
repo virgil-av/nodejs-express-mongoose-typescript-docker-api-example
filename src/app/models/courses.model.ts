@@ -1,6 +1,6 @@
-import {Model, model, Schema} from 'mongoose';
-import {AuthorModel} from "./author.model";
-import {ICourseModel} from "../interfaces/course.interface";
+import { Model, model, Schema } from 'mongoose';
+import { AuthorModel } from './author.model';
+import { ICourseModel } from '../interfaces/course.interface';
 
 const courseSchema = new Schema({
     name: {
@@ -12,14 +12,14 @@ const courseSchema = new Schema({
     },
     author: {
         type: Schema.Types.ObjectId,
-        ref:'Author',
+        ref: 'Author',
         required: true
     },
     collaborators: [AuthorModel.schema],
     category: {
         type: String,
         required: true,
-        enum: ['backend','frontend','fullstack'],
+        enum: ['backend', 'frontend', 'fullstack'],
         lowercase: true,
         // uppercase: true
         trim: true
@@ -33,7 +33,7 @@ const courseSchema = new Schema({
                     // do async work
                     const result = value && value.length > 0;
                     callback(result);
-                },0);
+                }, 0);
             },
             message: 'A course should have at least one tag.'
         }
@@ -49,7 +49,7 @@ const courseSchema = new Schema({
     price: {
         type: Number,
         required: function () {
-            return this.isPublished
+            return this.isPublished;
         },
         min: 10,
         max: 200,

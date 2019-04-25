@@ -1,4 +1,4 @@
-import {get} from "config";
+import { get } from 'config';
 import winston from 'winston';
 import 'winston-mongodb';
 import 'express-async-errors'; // used to handle try catch errors

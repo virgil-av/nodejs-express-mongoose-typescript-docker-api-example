@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from 'express';
 const winston = require('winston');
 
 /**
@@ -8,7 +8,7 @@ const winston = require('winston');
  * @param req
  * @param res
  */
-export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction){
+export function errorHandler(error: Error, req: Request, res: Response, next: NextFunction) {
     winston.error(error.message, error);
     res.status(500).send('Something failed');
 }

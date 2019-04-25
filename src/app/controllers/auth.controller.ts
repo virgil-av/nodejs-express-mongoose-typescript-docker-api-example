@@ -1,7 +1,7 @@
-import {Request, Response, Router} from "express";
-import {UserModel} from "../models/user.model";
-import {compare} from 'bcrypt';
-import {authValidators} from "../validation/auth.validators";
+import { Request, Response, Router } from 'express';
+import { UserModel } from '../models/user.model';
+import { compare } from 'bcrypt';
+import { authValidators } from '../validation/auth.validators';
 
 
 export const authRouter = Router();
@@ -19,16 +19,16 @@ authRouter.post('/', async (req: Request, res: Response) => {
         return;
     }
 
-    let user: any = await UserModel.findOne({email: req.body.email});
+    const user: any = await UserModel.findOne({email: req.body.email});
 
-    if(!user){
+    if (!user) {
         res.status(400).send('Invalid email or password');
         return;
     }
 
     const validPassword = await compare(req.body.password, user.password);
 
-    if(!validPassword){
+    if (!validPassword) {
         res.status(400).send('Invalid email or password');
         return;
     }

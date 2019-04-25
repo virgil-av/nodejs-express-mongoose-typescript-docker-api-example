@@ -1,6 +1,6 @@
-import {UserModel} from "../../../app/models/user.model";
-import {auth} from "../../../app/middleware/auth";
-import {Types} from "mongoose";
+import { UserModel } from '../../../app/models/user.model';
+import { auth } from '../../../app/middleware/auth';
+import { Types } from 'mongoose';
 
 
 describe('testing auth middleware', () => {

@@ -1,7 +1,7 @@
-import {Schema, Model, model} from 'mongoose';
-import config from "config";
-import {IUserModel} from "../interfaces/user.interface";
-import {sign} from "jsonwebtoken";
+import { Schema, Model, model } from 'mongoose';
+import config from 'config';
+import { IUserModel } from '../interfaces/user.interface';
+import { sign } from 'jsonwebtoken';
 
 const userSchema = new Schema({
     name: {
@@ -27,7 +27,7 @@ const userSchema = new Schema({
     isAdmin: Boolean,
 });
 
-userSchema.methods.generateAuthToken = function(){
+userSchema.methods.generateAuthToken = function() {
     return sign({_id: this._id, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
 

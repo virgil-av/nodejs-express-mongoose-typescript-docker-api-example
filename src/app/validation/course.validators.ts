@@ -1,7 +1,7 @@
-import {ICourse} from "../interfaces/course.interface";
-import Joi from "joi";
+import { ICourse } from '../interfaces/course.interface';
+import Joi from 'joi';
 
-export function courseValidators(course: ICourse){
+export function courseValidators(course: ICourse) {
 
     const schema = {
         name: Joi.string().min(3).required(),

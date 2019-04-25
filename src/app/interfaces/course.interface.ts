@@ -1,5 +1,5 @@
-import {Document} from 'mongoose';
-import {AuthorDTO} from "./author.interface";
+import { Document } from 'mongoose';
+import { AuthorDTO } from './author.interface';
 
 export interface ICourse {
     name: string;

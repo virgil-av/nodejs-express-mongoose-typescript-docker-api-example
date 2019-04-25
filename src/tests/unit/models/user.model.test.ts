@@ -1,7 +1,7 @@
-import {UserModel} from "../../../app/models/user.model";
-import {verify} from 'jsonwebtoken';
-import {get} from "config";
-import {Types} from "mongoose"
+import { UserModel } from '../../../app/models/user.model';
+import { verify } from 'jsonwebtoken';
+import { get } from 'config';
+import { Types } from 'mongoose';
 
 describe('Test user generate token', () => {
 

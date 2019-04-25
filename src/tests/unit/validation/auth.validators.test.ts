@@ -1,4 +1,4 @@
-import {userValidators} from "../../../app/validation/user.validators";
+import { userValidators } from '../../../app/validation/user.validators';
 
 describe('Test user validator', () => {
 

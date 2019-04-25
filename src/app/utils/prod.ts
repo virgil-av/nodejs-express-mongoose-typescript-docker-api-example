@@ -1,8 +1,8 @@
-import helmet from "helmet";
-import compression from "compression";
+import helmet from 'helmet';
+import compression from 'compression';
 
 
-export function prodMiddleware(app: any){
+export function prodMiddleware(app: any) {
     app.use(helmet());
     app.use(compression());
 }

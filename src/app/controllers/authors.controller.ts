@@ -1,7 +1,7 @@
-import {Request, Response, Router} from "express";
-import {AuthorModel} from "../models/author.model";
-import {authorValidators} from "../validation/author.validators";
-import {Types} from "mongoose";
+import { Request, Response, Router } from 'express';
+import { AuthorModel } from '../models/author.model';
+import { authorValidators } from '../validation/author.validators';
+import { Types } from 'mongoose';
 
 export const authorRouter = Router();
 

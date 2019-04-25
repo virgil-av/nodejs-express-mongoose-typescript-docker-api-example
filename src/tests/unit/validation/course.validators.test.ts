@@ -1,4 +1,4 @@
-import {courseValidators} from "../../../app/validation/course.validators";
+import { courseValidators } from '../../../app/validation/course.validators';
 
 
 describe('Test Course validator', () => {

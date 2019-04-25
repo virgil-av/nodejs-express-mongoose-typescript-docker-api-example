@@ -1,9 +1,9 @@
-import Joi from "joi";
-import PasswordComplexity from "joi-password-complexity";
-import {IUser} from "../interfaces/user.interface";
+import Joi from 'joi';
+import PasswordComplexity from 'joi-password-complexity';
+import { IUser } from '../interfaces/user.interface';
 
 
-export function userValidators(user: IUser){
+export function userValidators(user: IUser) {
 
     const complexityOptions = {
         min: 5,

@@ -1,8 +1,8 @@
-import Joi from "joi";
-import PasswordComplexity from "joi-password-complexity";
-import {Auth} from "../interfaces/auth.interface";
+import Joi from 'joi';
+import PasswordComplexity from 'joi-password-complexity';
+import { Auth } from '../interfaces/auth.interface';
 
-export function authValidators(auth: Auth){
+export function authValidators(auth: Auth) {
 
     const complexityOptions = {
         min: 5,

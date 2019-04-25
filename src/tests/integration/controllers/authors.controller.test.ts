@@ -1,9 +1,9 @@
-import request from "supertest";
-import app, {server} from "../../../server";
-import {AuthorModel} from "../../../app/models/author.model";
-import {AuthorDTO, IAuthor} from "../../../app/interfaces/author.interface";
-import {Types} from "mongoose";
-import {UserModel} from "../../../app/models/user.model";
+import request from 'supertest';
+import app, { server } from '../../../server';
+import { AuthorModel } from '../../../app/models/author.model';
+import { AuthorDTO, IAuthor } from '../../../app/interfaces/author.interface';
+import { Types } from 'mongoose';
+import { UserModel } from '../../../app/models/user.model';
 
 
 describe('/api/authors', () => {
@@ -18,14 +18,14 @@ describe('/api/authors', () => {
     const addTestAuthors = async () => {
         await AuthorModel.collection.insertMany([
             {
-                "name": "Test Author",
-                "bio": "test bio",
-                "website": "www"
+                'name': 'Test Author',
+                'bio': 'test bio',
+                'website': 'www'
             },
             {
-                "name": "Test Author 2",
-                "bio": "test bio 2",
-                "website": "www2"
+                'name': 'Test Author 2',
+                'bio': 'test bio 2',
+                'website': 'www2'
             }
         ]);
     };
@@ -34,10 +34,10 @@ describe('/api/authors', () => {
     beforeEach(async () => {
 
         defaultAuthor = {
-            "name": "Test Author",
-            "bio": "test bio",
-            "website": "www"
-        }
+            'name': 'Test Author',
+            'bio': 'test bio',
+            'website': 'www'
+        };
 
     });
 
@@ -51,7 +51,7 @@ describe('/api/authors', () => {
         it('should return all authors', async () => {
 
             await addTestAuthors();
-            const res = await request(app).get("/api/authors");
+            const res = await request(app).get('/api/authors');
 
             expect(res.status).toEqual(200);
             expect(res.body.length).toBe(2);
@@ -65,16 +65,16 @@ describe('/api/authors', () => {
 
         it('should return an author by given id', async () => {
             await addTestAuthors();
-            const allAuthors: any = await request(app).get("/api/authors");
+            const allAuthors: any = await request(app).get('/api/authors');
 
             const res = await request(app).get(`/api/authors/${allAuthors.body[0]._id}`);
 
             expect(res.status).toEqual(200);
-            expect(res.body).toHaveProperty('_id', allAuthors.body[0]._id)
+            expect(res.body).toHaveProperty('_id', allAuthors.body[0]._id);
         });
 
         it('should return error 400 for non existing author id', async () => {
-            const badId = "1234";
+            const badId = '1234';
             const res = await request(app).get(`/api/authors/${badId}`);
 
             expect(res.status).toEqual(400);
@@ -95,11 +95,11 @@ describe('/api/authors', () => {
             const res = await execRequest();
 
             expect(res.status).toEqual(200);
-            expect(res.body).toHaveProperty('_id')
+            expect(res.body).toHaveProperty('_id');
         });
 
         it('should return 400 if invalid author name', async () => {
-            defaultAuthor.name = "";
+            defaultAuthor.name = '';
 
             const res = await execRequest();
 
@@ -107,7 +107,7 @@ describe('/api/authors', () => {
         });
 
         it('should return 400 if invalid author bio', async () => {
-            defaultAuthor.bio = "";
+            defaultAuthor.bio = '';
 
             const res = await execRequest();
 
@@ -121,7 +121,7 @@ describe('/api/authors', () => {
 
         it('should return a 200 if author name was updated', async () => {
 
-            defaultAuthor.name = "Test Author changed";
+            defaultAuthor.name = 'Test Author changed';
             const author = await execRequest();
 
             const res = await request(app).put(`/api/authors/${author.body._id}`)
@@ -133,7 +133,7 @@ describe('/api/authors', () => {
 
         it('should return a 400 if author name is invalid', async () => {
 
-            defaultAuthor.name = "";
+            defaultAuthor.name = '';
             const author = await execRequest();
 
             const res = await request(app).put(`/api/authors/${author.body._id}`)
@@ -143,7 +143,7 @@ describe('/api/authors', () => {
         });
 
         it('should return a 400 if author bio is invalid', async () => {
-            defaultAuthor.bio = "";
+            defaultAuthor.bio = '';
             const author = await execRequest();
 
             const res = await request(app).put(`/api/authors/${author.body._id}`)
