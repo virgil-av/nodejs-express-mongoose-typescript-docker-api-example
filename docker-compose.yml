@@ -36,7 +36,6 @@ services:
                 volumes:
                         #Use the local app folder, but use a named volume for node_modules. This avoids conflicts with the local system.
                         - ./:/app
-                        - app-node-modules:/app/node_modules
                 ports:
                         - 8888:8888
                 environment:
@@ -48,6 +47,5 @@ services:
 
 volumes:
         #Configure shared volumes to be used in the services above.
-        app-node-modules:
         mongo-db:
         mongo-configdb:

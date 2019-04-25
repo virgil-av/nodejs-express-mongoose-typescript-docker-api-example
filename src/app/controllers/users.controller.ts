@@ -1,8 +1,9 @@
-import { Request, Response, Router } from 'express';
-import { UserModel } from '../models/user.model';
-import { userValidators } from '../validation/user.validators';
-import { pick } from 'lodash';
-import { genSalt, hash } from 'bcrypt';
+import {Request, Response, Router} from 'express';
+import {UserModel} from '../models/user.model';
+import {userValidators} from '../validation/user.validators';
+import {pick} from 'lodash';
+import {genSalt, hash} from 'bcrypt';
+import {auth} from '../middleware/auth';
 
 
 export const userRouter = Router();
@@ -15,14 +16,14 @@ userRouter.post('/', async (req: Request, res: Response) => {
     const {error} = userValidators(req.body); // returnedObject.error
 
     if (error) {
-        res.status(400).send(error);
+        res.status(400).send({error: error});
         return;
     }
 
     let user: any = await UserModel.findOne({email: req.body.email});
 
     if (user) {
-        res.status(400).send('User already registered');
+        res.status(400).send({error: 'User already registered'});
         return;
     }
 
@@ -42,7 +43,7 @@ userRouter.post('/', async (req: Request, res: Response) => {
  * GET /api/users/me
  *
  */
-userRouter.get('/me', async (req: Request, res: Response) => {
+userRouter.get('/me', auth, async (req: Request, res: Response) => {
 
     const user = await UserModel.findById(req.user._id).select('-password');
     res.send(user);
