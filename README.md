@@ -16,7 +16,6 @@ Created this app to improve my JavaScript knowledge and transition from Frontend
 
 ### Project details
 - navigate to localhost:8081 for mongo-express you will access the gui for mongo
-- navigate to localhost:8888/api/ for the hello world (will be replaced with swagger in the near future)
-- to test endpoints you will need postman (will build a frontend in a future release)
+- navigate to localhost:8888/api/api-docs for swagger documentation
 
 
