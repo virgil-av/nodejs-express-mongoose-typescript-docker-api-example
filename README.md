@@ -15,7 +15,7 @@ Created this app to improve my JavaScript knowledge and transition from Frontend
 - run `docker-compose up`, this will create 3 containers mongo (port 27017), mongo-express (port 8081), demo-app (port 8888)
 
 ### Project details
-- navigate to localhost:8081 for mongo-express you will access the gui for mongo
-- navigate to localhost:8888/api/api-docs for swagger documentation
+- navigate to `localhost:8081` for mongo-express you will access the gui for mongo
+- navigate to `localhost:8888/api/api-docs` for swagger documentation
 
 
