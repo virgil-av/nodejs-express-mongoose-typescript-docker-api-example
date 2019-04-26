@@ -27,12 +27,12 @@ coursesRouter.post('/', auth, async (req: Request, res: Response) => {
     const {error} = courseValidators(req.body); // returnedObject.error
 
     if (error) {
-        res.status(400).send(error.details[0].message);
+        res.status(400).send({error: error.details[0].message});
         return;
-    }
+}
 
     if (!Types.ObjectId.isValid(req.body.author)) {
-        return res.status(400).send('Invalid object id for author');
+        return res.status(400).send({error: 'Invalid object id for author'});
     }
 
     const course = new CourseModel(req.body);

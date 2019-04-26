@@ -15,21 +15,21 @@ authRouter.post('/', async (req: Request, res: Response) => {
     const {error} = authValidators(req.body); // returnedObject.error
 
     if (error) {
-        res.status(400).send(error);
+        res.status(400).send({error: error});
         return;
     }
 
     const user: any = await UserModel.findOne({email: req.body.email});
 
     if (!user) {
-        res.status(400).send('Invalid email or password');
+        res.status(400).send({error: 'Invalid email or password'});
         return;
     }
 
     const validPassword = await compare(req.body.password, user.password);
 
     if (!validPassword) {
-        res.status(400).send('Invalid email or password');
+        res.status(400).send({error: 'Invalid email or password'});
         return;
     }
 

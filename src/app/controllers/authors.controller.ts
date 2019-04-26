@@ -2,6 +2,8 @@ import { Request, Response, Router } from 'express';
 import { AuthorModel } from '../models/author.model';
 import { authorValidators } from '../validation/author.validators';
 import { Types } from 'mongoose';
+import { auth } from '../middleware/auth';
+import { admin } from '../middleware/admin';
 
 export const authorRouter = Router();
 
@@ -9,7 +11,7 @@ export const authorRouter = Router();
  * GET /api/authors
  *
  */
-authorRouter.get('/', async (req: Request, res: Response) => {
+authorRouter.get('/', auth, async (req: Request, res: Response) => {
 
     const courses = await AuthorModel.find();
     res.send(courses);
@@ -20,7 +22,7 @@ authorRouter.get('/', async (req: Request, res: Response) => {
  * POST /api/authors
  *
  */
-authorRouter.post('/', async (req: Request, res: Response) => {
+authorRouter.post('/', auth, async (req: Request, res: Response) => {
     const {error} = authorValidators(req.body); // returnedObject.error
 
     if (error) {
@@ -39,7 +41,7 @@ authorRouter.post('/', async (req: Request, res: Response) => {
  * GET /api/authors/:id
  *
  */
-authorRouter.get('/:id', async (req: Request, res: Response) => {
+authorRouter.get('/:id', auth, async (req: Request, res: Response) => {
 
     if (!Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).send(`${req.params.id} is not a valid id`);
@@ -59,7 +61,7 @@ authorRouter.get('/:id', async (req: Request, res: Response) => {
  * PUT /api/authors/:id
  *
  */
-authorRouter.put('/:id', async (req: Request, res: Response) => {
+authorRouter.put('/:id', auth, async (req: Request, res: Response) => {
 
     const {error} = authorValidators(req.body); // returnedObject.error
 
@@ -82,7 +84,7 @@ authorRouter.put('/:id', async (req: Request, res: Response) => {
  * DELETE /api/authors/:id
  *
  */
-authorRouter.delete('/:id', async (req: Request, res: Response) => {
+authorRouter.delete('/:id', [auth, admin], async (req: Request, res: Response) => {
 
     const author = await AuthorModel.findByIdAndDelete(req.params.id);
     res.send(author);

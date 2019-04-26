@@ -17,16 +17,16 @@
       "description": "API for users in the system"
     },
     {
+      "name": "Auth",
+      "description": "API for auth token"
+    },
+    {
       "name": "Courses",
       "description": "API for courses in the system"
     },
     {
       "name": "Authors",
       "description": "API for authors in the system"
-    },
-    {
-      "name": "Auth",
-      "description": "API for auth token"
     }
   ],
   "schemes": [
@@ -64,6 +64,12 @@
             "schema": {
               "$ref": "#/definitions/UserResponseModel"
             }
+          },
+          "400": {
+            "description": "Validation error or user already exists",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -98,9 +104,503 @@
           }
         }
       }
+    },
+    "/auth": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Authenticate user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User that we want to authenticate",
+            "schema": {
+              "$ref": "#/definitions/AuthModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New user is created",
+            "schema": {
+              "$ref": "#/definitions/AuthResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/courses": {
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Create new course",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          },
+          {
+            "name": "course",
+            "in": "body",
+            "description": "Course that we want to create",
+            "schema": {
+              "$ref": "#/definitions/CourseModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New user is created",
+            "schema": {
+              "$ref": "#/definitions/CourseResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Get all courses",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logged user",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/CourseResponseModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/{courseId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "courseId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "Course id that we want to find"
+        },
+        {
+          "in": "header",
+          "name": "x-auth-token",
+          "description": "JWT token",
+          "schema": {
+            "type": "string",
+            "format": "JWT"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Get courses by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Course by id was found",
+            "schema": {
+              "$ref": "#/definitions/CourseResponseModel"
+            }
+          },
+          "404": {
+            "description": "Course by given id was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Updated course by id",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "body",
+            "description": "Course that we want to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CourseModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Course was updated",
+            "schema": {
+              "$ref": "#/definitions/CourseResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Course by given id was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Delete course by id",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Course was deleted",
+            "schema": {
+              "$ref": "#/definitions/CourseResponseModel"
+            }
+          }
+        }
+      }
+    },
+    "/courses/{courseId}/collaborators": {
+      "post": {
+        "tags": [
+          "Courses"
+        ],
+        "description": "Get course by id and add a collaborator",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Course id that we want to find"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          },
+          {
+            "name": "author",
+            "in": "body",
+            "description": "Course that we want to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Collaborator added to course by id",
+            "schema": {
+              "$ref": "#/definitions/CourseResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error or invalid id",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Course by given id was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/authors": {
+      "post": {
+        "tags": [
+          "Authors"
+        ],
+        "description": "Create new author",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          },
+          {
+            "name": "author",
+            "in": "body",
+            "description": "Author that we want to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New user is created",
+            "schema": {
+              "$ref": "#/definitions/AuthorResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "description": "Get all authors",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Authors",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AuthorResponseModel"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authors/{authorId}": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "description": "Get author by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "authorId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Author id that we want to find"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Author by id was found",
+            "schema": {
+              "$ref": "#/definitions/AuthorResponseModel"
+            }
+          },
+          "404": {
+            "description": "Author by given id was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Authors"
+        ],
+        "description": "Updated author by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "authorId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Author id that we want to find"
+          },
+          {
+            "name": "author",
+            "in": "body",
+            "description": "Author that we want to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AuthorModel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Author was updated",
+            "schema": {
+              "$ref": "#/definitions/AuthorResponseModel"
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Author by given id was not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Authors"
+        ],
+        "description": "Delete author by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Author id that we want to find"
+          },
+          {
+            "in": "header",
+            "name": "x-auth-token",
+            "description": "JWT token",
+            "schema": {
+              "type": "string",
+              "format": "JWT"
+            },
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Author was deleted",
+            "schema": {
+              "$ref": "#/definitions/AuthorResponseModel"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "Error": {
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    },
     "UserModel": {
       "required": [
         "name",
@@ -132,6 +632,144 @@
         },
         "name": {
           "type": "string"
+        }
+      }
+    },
+    "AuthModel": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthResponseModel": {
+      "properties": {
+        "auth_token": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthorModel": {
+      "required": [
+        "name",
+        "bio"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthorResponseModel": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "CourseModel": {
+      "required": [
+        "name",
+        "author",
+        "category",
+        "isPublished",
+        "price"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "backend",
+            "frontend",
+            "fullstack"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isPublished": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer"
+        }
+      }
+    },
+    "CourseResponseModel": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "collaborators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuthorModel"
+          }
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "backend",
+            "frontend",
+            "fullstack"
+          ]
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isPublished": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": "integer"
+        },
+        "__v": {
+          "type": "integer"
         }
       }
     }

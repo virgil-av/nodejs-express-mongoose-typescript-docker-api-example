@@ -1,9 +1,9 @@
-import {Request, Response, Router} from 'express';
-import {UserModel} from '../models/user.model';
-import {userValidators} from '../validation/user.validators';
-import {pick} from 'lodash';
-import {genSalt, hash} from 'bcrypt';
-import {auth} from '../middleware/auth';
+import { Request, Response, Router } from 'express';
+import { UserModel } from '../models/user.model';
+import { userValidators } from '../validation/user.validators';
+import { pick } from 'lodash';
+import { genSalt, hash } from 'bcrypt';
+import { auth } from '../middleware/auth';
 
 
 export const userRouter = Router();
