@@ -3,8 +3,8 @@
 Created this app to improve my JavaScript knowledge and transition from Frontend to Full-Stack JavaScript. 
 
 __________________________________
-## Read this before proceeding
-- This is a Proof Of Concept and was done in 2019
+## Read Me !!!
+- This is a Proof Of Concept I did in 2019
 - Due to old libraries the typescript app will only compile with `Node.js 11`. 
 - Download link here -> https://nodejs.org/en/download/releases/
 - In the near future I will update this repo with the latest bcrypt and other libraries but until then either use an older version of NodeJs or you can update the code to your convenience. (Don't mind pull requests)
